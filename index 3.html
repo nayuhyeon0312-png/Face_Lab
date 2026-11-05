@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#090711">
+<title>FACE LAB V2 | AI Face Analysis Studio</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Gowun+Dodum&family=Playfair+Display:wght@500;600&display=swap');
+:root{--bg:#090711;--panel:#131020;--panel2:#1b1630;--line:#332849;--violet:#a78bfa;--pink:#d8a7ff;--text:#f4efff;--muted:#a69bb9;--cyan:#8ce7ed}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 50% -15%,#30204d 0%,#100c1b 38%,var(--bg) 72%);color:var(--text);font-family:'Gowun Dodum',sans-serif;min-height:100vh}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.15;background-image:radial-gradient(#c9aaff 1px,transparent 1px);background-size:37px 37px;mask-image:linear-gradient(to bottom,black,transparent 80%)}
+button{font:inherit}.wrap{width:min(1040px,calc(100% - 32px));margin:auto;padding:30px 0 70px;position:relative}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:42px}.brand{font:500 13px 'DM Mono';letter-spacing:.22em;color:var(--pink)}.status{font:11px 'DM Mono';color:var(--cyan);border:1px solid #34535a;border-radius:30px;padding:8px 12px}.hero{text-align:center;margin-bottom:35px}.eyebrow{font:11px 'DM Mono';letter-spacing:.28em;color:var(--violet)}h1{font:600 clamp(42px,8vw,76px) 'Playfair Display',serif;letter-spacing:.03em;margin:12px 0 8px;text-shadow:0 0 35px #a78bfa55}.subtitle{color:var(--muted);font-size:14px;line-height:1.8}.panel{background:linear-gradient(145deg,#171226ee,#100d19f2);border:1px solid var(--line);border-radius:22px;padding:24px;box-shadow:0 20px 70px #0007;margin:18px 0}.section-title{font:500 13px 'DM Mono';letter-spacing:.12em;color:var(--pink);margin:0 0 16px}.choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px}.choice{position:relative}.choice input{position:absolute;opacity:0}.choice label{display:flex;align-items:center;gap:10px;min-height:58px;padding:12px;border:1px solid #3a304e;border-radius:13px;background:#171326;cursor:pointer;color:#ddd4ed;transition:.2s}.choice label:hover{border-color:var(--violet);transform:translateY(-1px)}.choice input:checked+label{border-color:var(--violet);background:#2a2040;box-shadow:inset 0 0 0 1px #a78bfa55;color:white}.choice input:focus-visible+label,button:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}.symbol{font-size:20px}.choice small{display:block;color:var(--muted);font-size:11px;margin-top:3px}.capture-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:18px}.camera{background:#080711;border:1px solid #3a304e;border-radius:17px;min-height:280px;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}.camera video,.camera img{width:100%;height:100%;max-height:430px;object-fit:contain;display:none}.camera.active video,.camera.active img{display:block}.placeholder{text-align:center;color:var(--muted);padding:25px}.placeholder .camicon{font-size:42px;color:var(--violet);display:block;margin-bottom:12px}.scanline{display:none;position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),#fff,var(--violet),transparent);box-shadow:0 0 18px var(--cyan);animation:scan 2.6s linear infinite;pointer-events:none}.scanning .scanline{display:block}@keyframes scan{from{top:5%}to{top:95%}}.actions{display:flex;flex-direction:column;gap:9px;justify-content:center}.btn{border:1px solid #6c5791;border-radius:12px;padding:12px 14px;background:#241a38;color:var(--text);font-size:14px;cursor:pointer;transition:.2s}.btn:hover{background:#34264e;border-color:var(--pink)}.btn.primary{background:linear-gradient(110deg,#7654b7,#a16cc8);border:0;color:white;font-weight:bold;box-shadow:0 8px 25px #8b5bc744}.btn.danger{border-color:#85516e;background:#301a2b}.btn:disabled{opacity:.4;cursor:not-allowed}.hint{font-size:11px;line-height:1.7;color:var(--muted)}.privacy{border-left:2px solid var(--cyan);padding:10px 13px;background:#11202755;color:#b9dadd;font-size:12px;line-height:1.7;border-radius:0 9px 9px 0;margin-top:16px}.toast{min-height:20px;color:#ffb7d7;font-size:12px;margin-top:4px;line-height:1.6}.result{display:none}.result.show{display:block;animation:fade .6s ease}@keyframes fade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}.result-head{text-align:center;padding:12px 0 24px}.result-head h2{font:500 30px 'Playfair Display';margin:8px}.report-meta{font:11px 'DM Mono';color:var(--muted);margin-top:8px}.result-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.result-card{border:1px solid #3a304e;border-radius:15px;padding:17px;background:linear-gradient(145deg,#201832,#14101f);min-width:0}.result-card .tag{font:10px 'DM Mono';letter-spacing:.12em;color:var(--cyan)}.result-card h3{margin:9px 0 7px;font-size:19px;color:#eadbff}.result-card p{margin:0;color:#b9aecb;font-size:13px;line-height:1.75}.result-card .detail{margin-top:10px;padding-top:10px;border-top:1px solid #3a304e;color:#d5c8e8;font-size:12px;line-height:1.7}.palette{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;margin-top:12px}.swatch{min-width:0}.swatch-color{height:65px;border-radius:10px;border:1px solid #ffffff2b;box-shadow:inset 0 0 12px #0002}.swatch-code{font:10px 'DM Mono';color:#e5d8f6;text-align:center;margin:7px 0 5px}.copy-btn{width:100%;padding:6px 3px;font-size:10px;border:1px solid #59476f;border-radius:7px;background:#211932;color:#d8c7f1;cursor:pointer}.report-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:20px}.foot{text-align:center;color:#756b85;font-size:11px;line-height:1.8;margin-top:30px}.small-note{color:var(--muted);font-size:11px;line-height:1.65;margin-top:10px}.hidden{display:none!important}
+@media(max-width:680px){.wrap{padding-top:22px}.top{margin-bottom:30px}.panel{padding:17px}.capture-grid{grid-template-columns:1fr}.camera{min-height:230px}.actions{display:grid;grid-template-columns:1fr 1fr}.actions .hint,.actions .privacy,.actions .toast{grid-column:1/-1}.actions .primary{grid-column:1/-1}.palette{gap:6px}.swatch-color{height:52px}.swatch-code{font-size:9px}.copy-btn{font-size:9px}}
+@media(max-width:380px){.choices{grid-template-columns:1fr 1fr}.choice label{font-size:12px;padding:9px}.palette{grid-template-columns:repeat(5,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top"><div class="brand">✦ FACE LAB / V2</div><div class="status" id="systemStatus">● SYSTEM READY</div></header>
+<section class="hero"><div class="eyebrow">AI FACE ANALYSIS STUDIO</div><h1>Discover Your Aura</h1><div class="subtitle">얼굴에 담긴 분위기를 재미있게 탐험해 봐.<br>원하는 분석을 고르고, 카메라 또는 사진으로 시작해!</div></section>
+
+<section class="panel">
+<h2 class="section-title">01 / SELECT YOUR ANALYSIS</h2>
+<div class="choices" id="choices">
+<div class="choice"><input type="checkbox" id="color" checked><label for="color"><span class="symbol">🎨</span><span>퍼스널 컬러<small>사진 픽셀 색상 참고</small></span></label></div>
+<div class="choice"><input type="checkbox" id="career" checked><label for="career"><span class="symbol">✧</span><span>어울리는 직업<small>재미로 보는 직업 추천</small></span></label></div>
+<div class="choice"><input type="checkbox" id="ideal" checked><label for="ideal"><span class="symbol">♡</span><span>나의 이상형<small>재미로 보는 이상형 취향</small></span></label></div>
+<div class="choice"><input type="checkbox" id="mbti" checked><label for="mbti"><span class="symbol">☯</span><span>MBTI 예측<small>완전 재미로 보는 추측</small></span></label></div>
+<div class="choice"><input type="checkbox" id="face" checked><label for="face"><span class="symbol">☾</span><span>AI 관상<small>오락용 첫인상 해설</small></span></label></div>
+<div class="choice"><input type="checkbox" id="animal"><label for="animal"><span class="symbol">🐈</span><span>이미지 동물상<small>재미로 보는 이미지 유형</small></span></label></div>
+<div class="choice"><input type="checkbox" id="geometry" checked><label for="geometry"><span class="symbol">⌗</span><span>얼굴 비율·대칭<small>랜드마크 기반 측정</small></span></label></div>
+</div></section>
+
+<section class="panel">
+<h2 class="section-title">02 / FACE SCANNER</h2>
+<div class="capture-grid">
+<div class="camera" id="cameraBox"><div class="placeholder" id="placeholder"><span class="camicon">⌾</span>카메라를 켜거나<br>분석할 사진을 업로드해 줘.</div><video id="video" autoplay playsinline muted></video><img id="preview" alt="업로드한 사진 미리보기"><div class="scanline"></div></div>
+<div class="actions">
+<button class="btn" id="startCamera">◉ 카메라 켜기</button><button class="btn" id="capture" disabled>사진 촬영하기</button><button class="btn" id="upload">▧ 사진 업로드</button>
+<input type="file" id="fileInput" accept="image/*" hidden>
+<button class="btn" id="stopCamera" disabled>카메라 끄기</button><button class="btn danger" id="deletePhoto" disabled>사진 삭제</button>
+<button class="btn primary" id="analyze">✦ 분석 시작하기</button>
+<div class="hint">밝은 곳에서 얼굴이 정면으로 보이도록 촬영하면 좋아. 새 사진을 업로드하면 기존 사진이 교체돼.</div><div class="toast" id="message" role="status" aria-live="polite"></div>
+</div></div>
+<div class="privacy">🔒 <b>사진 보호 안내</b><br>선택한 사진은 이 브라우저 탭 안에서만 처리하며 서버로 전송하거나 저장하지 않아. 얼굴 랜드마크 분석은 외부에서 내려받는 무료 오픈소스 모델을 사용할 수 있으며, 사진 자체는 모델 서버로 전송하지 않아. 직업·이상형·MBTI·관상·동물상은 재미 콘텐츠이며 얼굴만으로 성격이나 적성을 판별하지 않아.</div>
+</section>
+
+<section class="panel result" id="result">
+<div class="result-head"><div class="eyebrow">YOUR PERSONAL REPORT</div><h2>✦ Your Aura Report ✦</h2><div class="subtitle">사진에서 계산한 정보와 재미 콘텐츠를 구분해 보여 줘.</div><div class="report-meta" id="reportDate"></div></div>
+<div class="result-cards" id="resultCards"></div>
+<div class="report-actions"><button class="btn" id="again">↻ 다시 분석하기</button><button class="btn primary" id="downloadReport">↓ TXT 리포트 저장</button></div>
+<div class="small-note">측정값은 사진의 조명, 각도, 표정, 카메라 특성에 영향을 받아. 의료·심리·채용·진단 목적으로 사용할 수 없어.</div>
+</section>
+<footer class="foot">FACE LAB · A playful face-reading experience<br>분석 결과는 오락 및 참고 목적이며 과학적 진단·평가가 아닙니다.</footer>
+</div>
+<script>
+'use strict';
+const $=id=>document.getElementById(id);
+let stream=null, hasImage=false, imageUrl=null, currentFileName='', lastReport='', lastAnalysis=null, faceLandmarker=null, faceModelPromise=null;
+const video=$('video'),preview=$('preview'),box=$('cameraBox');
+function showMessage(t){$('message').textContent=t}
+function showPlaceholder(){ $('placeholder').style.display=hasImage?'none':'block';}
+function setPhotoState(on){hasImage=on;$('deletePhoto').disabled=!on;$('analyze').disabled=!on;showPlaceholder();}
+function releaseImage(){if(imageUrl){URL.revokeObjectURL(imageUrl);imageUrl=null;}}
+async function stopCamera(){
+ if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;}
+ video.pause();video.srcObject=null;video.style.display='none';$('capture').disabled=true;$('stopCamera').disabled=true;
+ if(!hasImage){box.classList.remove('active');showPlaceholder();}
+}
+function showImage(src){preview.src=src;preview.style.display='block';video.style.display='none';box.classList.add('active');setPhotoState(true);$('result').classList.remove('show');}
+$('startCamera').onclick=async()=>{
+ try{
+  if(!navigator.mediaDevices?.getUserMedia)throw new Error('unsupported');
+  await stopCamera();stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'},audio:false});
+  video.srcObject=stream;await video.play();video.style.display='block';preview.style.display='none';box.classList.add('active');$('placeholder').style.display='none';
+  $('capture').disabled=false;$('stopCamera').disabled=false;showMessage('카메라가 켜졌어. 촬영 버튼을 눌러 줘!');
+ }catch(e){showMessage('카메라를 사용할 수 없어. 브라우저 권한을 허용하거나 사진 업로드를 이용해 줘. (카메라는 HTTPS 또는 localhost에서 사용할 수 있어.)');}
+};
+$('stopCamera').onclick=stopCamera;
+$('capture').onclick=async()=>{
+ if(!stream||!video.videoWidth){showMessage('카메라가 준비될 때까지 잠시 기다려 줘.');return;}
+ const c=document.createElement('canvas');c.width=video.videoWidth;c.height=video.videoHeight;c.getContext('2d').drawImage(video,0,0);
+ releaseImage();preview.src=c.toDataURL('image/jpeg',.9);showImage(preview.src);await stopCamera();currentFileName='카메라 촬영 사진';showMessage('촬영 완료! 사진은 기기에 저장되지 않아.');
+};
+$('upload').onclick=()=>$('fileInput').click();
+$('fileInput').onchange=async e=>{
+ const f=e.target.files?.[0];if(!f)return;
+ if(!f.type.startsWith('image/')){showMessage('JPG, PNG, WEBP 등 이미지 파일을 선택해 줘.');e.target.value='';return;}
+ if(f.size>15*1024*1024){showMessage('사진 용량은 15MB 이하로 선택해 줘.');e.target.value='';return;}
+ try{await stopCamera();releaseImage();imageUrl=URL.createObjectURL(f);const probe=new Image();probe.onload=()=>{showImage(imageUrl);currentFileName=f.name;showMessage('사진을 불러왔어. 새 사진으로 교체 완료!');};probe.onerror=()=>{releaseImage();showMessage('사진을 읽지 못했어. 다른 이미지 파일을 선택해 줘.');};probe.src=imageUrl;}
+ catch(err){showMessage('사진을 불러오지 못했어. 다른 파일을 선택해 줘.');}
+ e.target.value='';
+};
+$('deletePhoto').onclick=async()=>{
+ await stopCamera();releaseImage();preview.removeAttribute('src');preview.style.display='none';setPhotoState(false);currentFileName='';$('result').classList.remove('show');$('resultCards').innerHTML='';lastReport='';showMessage('사진을 삭제했어. 브라우저 안의 미리보기 데이터도 정리했어.');
+};
+
+const funData={
+ career:[['콘텐츠 크리에이터','아이디어를 이야기와 이미지로 표현하는 창작형 캐릭터.','흥미를 느끼는 주제를 직접 만들어 보는 활동을 상상해 봐.'],['브랜드 디자이너','색과 분위기를 조합해 인상을 설계하는 감각형 캐릭터.','시각적 취향을 탐색하는 재미에 초점을 둔 추천이야.'],['연구·탐구 분야','작은 단서를 모아 새로운 질문을 만드는 탐구형 캐릭터.','호기심을 따라가며 배우는 일을 상상한 결과야.'],['프로젝트 기획자','여러 생각을 연결해 하나의 방향으로 정리하는 설계형 캐릭터.','협업과 아이디어 정리를 좋아하는 설정이야.'],['공연·예술 분야','표현과 감정의 흐름을 즐기는 무대형 캐릭터.','창작 활동을 즐기는 가상의 캐릭터 추천이야.']],
+ ideal:[['차분한 다정형','말보다 행동으로 배려를 보여 주는 사람.','편안함과 안정감을 중요하게 여기는 로맨스 설정이야.'],['유쾌한 장난형','함께 있으면 웃음이 끊이지 않는 사람.','유머와 자연스러운 대화를 좋아하는 이야기 속 취향이야.'],['지적인 탐구형','관심사가 뚜렷하고 대화가 잘 통하는 사람.','새로운 주제를 함께 나누는 관계를 상상한 결과야.'],['조용한 표현형','천천히 친해지지만 진심을 잘 표현하는 사람.','서두르지 않는 관계를 선호하는 가상의 유형이야.'],['모험을 즐기는 자유형','새로운 장소와 경험을 함께 즐기는 사람.','함께 도전하는 관계를 상상한 재미 결과야.']],
+ mbti:[['INFP 느낌','상상력이 풍부하고 자기만의 취향이 뚜렷한 캐릭터.','실제 MBTI는 얼굴로 알 수 없어. 성격 검사를 대신하지 않는 놀이용 추측이야.'],['ISTP 느낌','차분하고 관찰력이 좋은 독립적인 캐릭터.','실제 MBTI는 얼굴로 알 수 없어. 성격 검사를 대신하지 않는 놀이용 추측이야.'],['ENFP 느낌','호기심이 많고 새로운 경험을 좋아하는 캐릭터.','실제 MBTI는 얼굴로 알 수 없어. 성격 검사를 대신하지 않는 놀이용 추측이야.'],['ISFJ 느낌','세심하고 주변을 잘 살피는 따뜻한 캐릭터.','실제 MBTI는 얼굴로 알 수 없어. 성격 검사를 대신하지 않는 놀이용 추측이야.'],['ENTP 느낌','아이디어를 주고받는 일을 즐기는 발상가 캐릭터.','실제 MBTI는 얼굴로 알 수 없어. 성격 검사를 대신하지 않는 놀이용 추측이야.']],
+ face:[['신비로운 첫인상','차분하고 생각이 많아 보이는 분위기라는 설정!','전통 관상이나 성격 판정이 아닌 창작형 분위기 해설이야.'],['친근한 첫인상','편안하고 먼저 말을 걸기 쉬운 분위기라는 설정!','전통 관상이나 성격 판정이 아닌 창작형 분위기 해설이야.'],['도회적인 첫인상','깔끔하고 자기만의 기준이 뚜렷해 보이는 분위기라는 설정!','전통 관상이나 성격 판정이 아닌 창작형 분위기 해설이야.'],['부드러운 첫인상','온화하고 안정감 있는 분위기라는 설정!','전통 관상이나 성격 판정이 아닌 창작형 분위기 해설이야.']],
+ animal:[['고양이상','도도하고 선명한 인상을 떠올리게 하는 이미지 유형.','외모를 동물에 비유하는 오락용 분류이며 실제 성격과 관계없어.'],['강아지상','부드럽고 친근한 인상을 떠올리게 하는 이미지 유형.','외모를 동물에 비유하는 오락용 분류이며 실제 성격과 관계없어.'],['여우상','날렵하고 또렷한 인상을 떠올리게 하는 이미지 유형.','외모를 동물에 비유하는 오락용 분류이며 실제 성격과 관계없어.'],['사슴상','맑고 차분한 인상을 떠올리게 하는 이미지 유형.','외모를 동물에 비유하는 오락용 분류이며 실제 성격과 관계없어.']]
+};
+const labels={color:'PERSONAL COLOR / PIXEL',career:'CAREER VIBE / FOR FUN',ideal:'YOUR IDEAL TYPE / FOR FUN',mbti:'MBTI GUESS / FOR FUN',face:'FACE READING / ENTERTAINMENT',animal:'ANIMAL VIBE / FOR FUN',geometry:'FACE LANDMARKS / MEASUREMENT'};
+function pick(a){return a[Math.floor(Math.random()*a.length)];}
+function makeCard(tag,title,desc,detail=''){
+ const card=document.createElement('article');card.className='result-card';
+ const t=document.createElement('div');t.className='tag';t.textContent=tag;
+ const h=document.createElement('h3');h.textContent=title;
+ const p=document.createElement('p');p.textContent=desc;card.append(t,h,p);
+ if(detail){const d=document.createElement('div');d.className='detail';d.textContent=detail;card.append(d);}
+ return card;
+}
+// Deterministic, browser-only color quantization: histogram in coarse RGB bins, then merge nearest bins.
+function extractPalette(img){
+ const canvas=document.createElement('canvas'),max=220,scale=Math.min(1,max/Math.max(img.naturalWidth,img.naturalHeight));
+ canvas.width=Math.max(1,Math.round(img.naturalWidth*scale));canvas.height=Math.max(1,Math.round(img.naturalHeight*scale));
+ const ctx=canvas.getContext('2d',{willReadFrequently:true});ctx.drawImage(img,0,0,canvas.width,canvas.height);
+ const {data}=ctx.getImageData(0,0,canvas.width,canvas.height),hist=new Map();
+ for(let i=0;i<data.length;i+=16){
+  const a=data[i+3];if(a<100)continue;
+  const r=data[i],g=data[i+1],b=data[i+2];
+  if(Math.max(r,g,b)<22)continue;
+  const key=[r>>4,g>>4,b>>4].join(',');
+  const v=hist.get(key)||{r:0,g:0,b:0,n:0};v.r+=r;v.g+=g;v.b+=b;v.n++;hist.set(key,v);
+ }
+ let bins=[...hist.values()].map(v=>({r:v.r/v.n,g:v.g/v.n,b:v.b/v.n,n:v.n})).sort((a,b)=>b.n-a.n);
+ const chosen=[];
+ while(bins.length&&chosen.length<5){
+  let best=bins.shift();
+  if(chosen.every(c=>Math.hypot(c.r-best.r,c.g-best.g,c.b-best.b)>35))chosen.push(best);
+ }
+ while(chosen.length<5)chosen.push(chosen[chosen.length-1]||{r:128,g:100,b:160,n:1});
+ return chosen.map(c=>({hex:'#'+[c.r,c.g,c.b].map(v=>Math.round(v).toString(16).padStart(2,'0')).join('').toUpperCase(),r:Math.round(c.r),g:Math.round(c.g),b:Math.round(c.b)}));
+}
+function rgbToHsl(r,g,b){r/=255;g/=255;b/=255;const max=Math.max(r,g,b),min=Math.min(r,g,b),d=max-min;let h=0,s=0,l=(max+min)/2;if(d){s=d/(1-Math.abs(2*l-1));switch(max){case r:h=((g-b)/d)%6;break;case g:h=(b-r)/d+2;break;default:h=(r-g)/d+4;}h*=60;if(h<0)h+=360;}return {h,s:s*100,l:l*100};}
+function sampleSkinTone(img,landmarks){
+ const canvas=document.createElement('canvas'),size=img.naturalWidth;const scale=Math.min(1,512/Math.max(img.naturalWidth,img.naturalHeight));
+ canvas.width=Math.max(1,Math.round(img.naturalWidth*scale));canvas.height=Math.max(1,Math.round(img.naturalHeight*scale));
+ const ctx=canvas.getContext('2d',{willReadFrequently:true});ctx.drawImage(img,0,0,canvas.width,canvas.height);
+ const points=landmarks?[landmarks[123],landmarks[352]]:[];let samples=[];
+ for(const pt of points){const x=Math.round(pt.x*canvas.width),y=Math.round(pt.y*canvas.height),rad=8;const x0=Math.max(0,x-rad),y0=Math.max(0,y-rad),w=Math.min(rad*2,canvas.width-x0),h=Math.min(rad*2,canvas.height-y0);if(w<=0||h<=0)continue;const d=ctx.getImageData(x0,y0,w,h).data;for(let i=0;i<d.length;i+=16){const r=d[i],g=d[i+1],b=d[i+2];if(r>45&&g>25&&b>15&&Math.max(r,g,b)-Math.min(r,g,b)>8)samples.push([r,g,b]);}}
+ if(!samples.length){for(let y=Math.floor(canvas.height*.35);y<Math.floor(canvas.height*.7);y+=4)for(let x=Math.floor(canvas.width*.3);x<Math.floor(canvas.width*.7);x+=4){const d=ctx.getImageData(x,y,1,1).data;if(d[0]>45&&d[1]>25&&d[2]>15)samples.push([d[0],d[1],d[2]]);}}
+ if(!samples.length)return null;
+ const avg=samples.reduce((a,v)=>[a[0]+v[0],a[1]+v[1],a[2]+v[2]],[0,0,0]).map(v=>v/samples.length);
+ return {rgb:avg,hsl:rgbToHsl(...avg)};
+}
+async function loadFaceModel(){
+ if(faceLandmarker)return faceLandmarker;if(faceModelPromise)return faceModelPromise;
+ faceModelPromise=(async()=>{
+  const vision=await import('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/+esm');
+  const files=await vision.FilesetResolver.forVisionTasks('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm');
+  faceLandmarker=await vision.FaceLandmarker.createFromOptions(files,{baseOptions:{modelAssetPath:'https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task',delegate:'CPU'},runningMode:'IMAGE',numFaces:1});
+  return faceLandmarker;
+ })();return faceModelPromise;
+}
+function measureFace(landmarks){
+ const dist=(a,b)=>Math.hypot((a.x-b.x),(a.y-b.y));
+ const width=dist(landmarks[234],landmarks[454]),height=dist(landmarks[10],landmarks[152]);
+ const eyeSpan=dist(landmarks[33],landmarks[263]),mouth=dist(landmarks[61],landmarks[291]);
+ const left=dist(landmarks[33],landmarks[234]),right=dist(landmarks[263],landmarks[454]);
+ const symmetry=Math.max(0,100-Math.abs(left-right)/Math.max(left,right)*100);
+ return {ratio:width/height,eyeSpan:eyeSpan/width,mouth:mouth/width,symmetry};
+}
+async function runFaceAnalysis(img){
+ try{const model=await loadFaceModel();const out=model.detect(img);if(!out.faceLandmarks?.length)return {error:'사진에서 얼굴을 찾지 못했어. 얼굴이 정면으로 보이고 가려지지 않은 사진을 사용해 줘.'};return {landmarks:out.faceLandmarks[0],metrics:measureFace(out.faceLandmarks[0])};}
+ catch(e){console.warn(e);return {error:'얼굴 랜드마크 모델을 불러오지 못했어. 인터넷 연결을 확인해 줘. 색상 추출과 재미 콘텐츠는 계속 사용할 수 있어.'};}
+}
+function addPaletteCard(card,palette){
+ const wrap=document.createElement('div');wrap.className='palette';
+ palette.forEach(c=>{const s=document.createElement('div');s.className='swatch';const color=document.createElement('div');color.className='swatch-color';color.style.background=c.hex;const code=document.createElement('div');code.className='swatch-code';code.textContent=c.hex;const btn=document.createElement('button');btn.className='copy-btn';btn.textContent='코드 복사';btn.onclick=async()=>{try{await navigator.clipboard.writeText(c.hex);btn.textContent='복사 완료!';setTimeout(()=>btn.textContent='코드 복사',1200);}catch(e){const ta=document.createElement('textarea');ta.value=c.hex;document.body.append(ta);ta.select();document.execCommand('copy');ta.remove();btn.textContent='복사 완료!';setTimeout(()=>btn.textContent='코드 복사',1200);}};s.append(color,code,btn);wrap.append(s);});card.append(wrap);
+}
+function personalColor(skin){
+ if(!skin)return ['사진 색감 팔레트','피부 영역을 안정적으로 샘플링하지 못했어. 아래 대표 색상 팔레트를 참고해 줘.','조명과 화이트밸런스가 피부색 측정에 큰 영향을 줘.'];
+ const {h,s,l}=skin.hsl;let season,desc;
+ if(h>=18&&h<55){season=s>38&&l>48?'봄 웜 계열 참고':'가을 웜 계열 참고';desc='샘플 픽셀에서 따뜻한 색조 경향이 관찰됐어.';}
+ else if(h>=330||h<18){season=s<38?'여름 쿨 계열 참고':'겨울 쿨 계열 참고';desc='샘플 픽셀에서 붉거나 차가운 색조 경향이 관찰됐어.';}
+ else if(h>=55&&h<170){season='뉴트럴·올리브 계열 참고';desc='샘플 픽셀에서 노랑·초록 방향의 색조가 관찰됐어.';}
+ else{season='쿨 계열 참고';desc='샘플 픽셀에서 푸른 방향의 색조가 관찰됐어.';}
+ return [season,desc,`샘플 평균 HSL: ${Math.round(h)}°, ${Math.round(s)}%, ${Math.round(l)}%. 전문 퍼스널컬러 진단이 아닌 사진 픽셀 참고값이야.`];
+}
+function makeReportText(date,items){return ['FACE LAB V2 — PERSONAL REPORT',`분석 날짜: ${date}`,'사진 처리: 브라우저 내부 처리 / 서버 전송 없음','',...items.flatMap(x=>[x.title,x.body,''])].join('\n');}
+$('analyze').onclick=async()=>{
+ if(!hasImage){showMessage('먼저 카메라로 촬영하거나 사진을 업로드해 줘.');return;}
+ const selected=Object.keys({color:1,career:1,ideal:1,mbti:1,face:1,animal:1,geometry:1}).filter(k=>$(k).checked);
+ if(!selected.length){showMessage('분석 항목을 하나 이상 선택해 줘!');return;}
+ const img=preview; if(!img.complete||!img.naturalWidth){showMessage('사진이 아직 준비되지 않았어. 다시 선택해 줘.');return;}
+ $('analyze').disabled=true;box.classList.add('scanning');$('systemStatus').textContent='● ANALYZING';showMessage('사진을 브라우저 안에서 분석하고 있어. 잠시만 기다려 줘.');
+ try{
+  const cards=$('resultCards');cards.innerHTML='';const reportItems=[];const palette=extractPalette(img);
+  let face=null,skin=null;
+  if(selected.includes('geometry')||selected.includes('color')){face=await runFaceAnalysis(img);if(face.landmarks)skin=sampleSkinTone(img,face.landmarks);}
+  const date=new Date().toLocaleString('ko-KR',{dateStyle:'long',timeStyle:'short'});
+  if(selected.includes('color')){
+   const [title,desc,detail]=personalColor(skin);const c=makeCard(labels.color,title,desc,detail+' 대표 색상 5개는 아래 실제 이미지 픽셀에서 추출했어.');addPaletteCard(c,palette);cards.append(c);
+   reportItems.push({title:'퍼스널 컬러 / 사진 픽셀 참고',body:`${title}\n${desc}\n${detail}\n대표 색상: ${palette.map(x=>x.hex).join(', ')}`});
+  }
+  if(selected.includes('geometry')){
+   if(face?.metrics){const m=face.metrics;const ratio=(m.ratio).toFixed(2),sym=Math.round(m.symmetry);const c=makeCard(labels.geometry,'얼굴 랜드마크 측정 완료',`얼굴 가로·세로 비율 ${ratio}, 좌우 기준점 거리의 단순 대칭 참고값 ${sym}%.`,`눈 사이 거리/얼굴 너비 ${(m.eyeSpan*100).toFixed(1)}%, 입 너비/얼굴 너비 ${(m.mouth*100).toFixed(1)}%. 랜드마크 좌표를 이용한 기하학적 참고값이며 미적 점수나 건강 평가가 아니야.`);cards.append(c);reportItems.push({title:'얼굴 비율·대칭 참고',body:`얼굴 가로/세로 비율: ${ratio}\n좌우 기준점 거리 대칭 참고값: ${sym}%\n눈 사이 거리/얼굴 너비: ${(m.eyeSpan*100).toFixed(1)}%\n입 너비/얼굴 너비: ${(m.mouth*100).toFixed(1)}%\n주의: 사진 각도와 표정에 영향을 받는 기하학적 참고값이야.`});}
+   else{const c=makeCard(labels.geometry,'얼굴 측정을 완료하지 못했어',face?.error||'얼굴 랜드마크를 찾지 못했어.','색상 추출과 재미 콘텐츠는 정상적으로 사용할 수 있어.');cards.append(c);reportItems.push({title:'얼굴 비율·대칭',body:face?.error||'얼굴 랜드마크를 찾지 못했어.'});}
+  }
+  for(const k of ['career','ideal','mbti','face','animal'])if(selected.includes(k)){
+   const [title,desc,detail]=pick(funData[k]);const c=makeCard(labels[k],title,desc,detail);cards.append(c);reportItems.push({title:labels[k],body:`${title}\n${desc}\n${detail}`});
+  }
+  $('reportDate').textContent='ANALYZED · '+date;
+  lastReport=makeReportText(date,reportItems);lastAnalysis={date,items:reportItems};$('result').classList.add('show');$('result').scrollIntoView({behavior:'smooth',block:'start'});showMessage('분석이 끝났어! 실제 픽셀 분석과 재미 콘텐츠를 구분해 표시했어.');
+ }catch(err){console.error(err);showMessage('분석 중 문제가 발생했어. 사진을 다시 선택한 뒤 시도해 줘.');}
+ finally{$('analyze').disabled=false;box.classList.remove('scanning');$('systemStatus').textContent='● SYSTEM READY';}
+};
+$('again').onclick=()=>{$('result').classList.remove('show');$('analyze').click();};
+$('downloadReport').onclick=()=>{
+ if(!lastReport){showMessage('먼저 분석을 완료해 줘.');return;}
+ const blob=new Blob(['\uFEFF'+lastReport],{type:'text/plain;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`FACE_LAB_Report_${new Date().toISOString().slice(0,10)}.txt`;document.body.append(a);a.click();a.remove();URL.revokeObjectURL(url);showMessage('TXT 리포트를 다운로드했어.');
+};
+window.addEventListener('beforeunload',()=>{if(stream)stream.getTracks().forEach(t=>t.stop());releaseImage();if(faceLandmarker)faceLandmarker.close();});
+</script>
+</body></html>
